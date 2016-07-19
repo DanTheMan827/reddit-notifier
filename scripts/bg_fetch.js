@@ -1,8 +1,8 @@
 
 // The interval that holds to update notifications task
 var updateNotificationsInterval = null;
-
 var lastNotificationCount = 0;
+var notifiedIDs = [];
 
 var actions = {
 	updateNotifications: function(request, callback) {
@@ -39,6 +39,11 @@ var actions = {
                 iconUrl: 'images/128.png'
             };
             data.data.children.forEach(function(element, index, array){
+                if(notifiedIDs.indexOf(element.id)>-1)
+                    return false;
+                
+                notifiedIDs.push(element.id);
+                
                 if(element.kind == 't1') {
                     // Comment Reply
                     desktopNotificationTemplate.title = element.data.author + ' replied in ' + element.data.link_title;
